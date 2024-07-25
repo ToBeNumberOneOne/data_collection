@@ -2,6 +2,10 @@ import asyncio
 import paho.mqtt.client as mqtt
 import struct
 
+from CraneData import CraneData
+
+data_frame = CraneData()
+
 # Callback when the client connects to the broker
 def on_connect(client, userdata, flags, rc):
     print("Connected with result code " + str(rc))
@@ -20,7 +24,8 @@ def parse_data(raw_data):
     word1_low = struct.unpack("b",raw_data[0:1])[0]
     word1_high = struct.unpack("b",raw_data[1:2])[0]
 
-    data["lock_state"] = (word1_low >> 0) & 1
+    data_frame.lock_state = (word1_low >> 0) & 1
+    #data["lock_state"] = (word1_low >> 0) & 1
     data["unlock_state"] = (word1_low >> 1) & 1
     data["landed_state"] = (word1_low >> 2) & 1
     data["20ft"] = (word1_low >> 3) & 1
