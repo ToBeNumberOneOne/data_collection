@@ -1,16 +1,17 @@
 import paho.mqtt.client as mqtt
 import schedule
 import time
+import sys
 
-# Define MQTT Broker's host and port
-broker_host = "localhost"
-broker_port = 1883
-
-# Define MQTT Client ID
-#client_id = "test_client"
-
-# Define MQTT topic
-topic = "Asc16"
+if len(sys.argv) >= 5 and str(sys.argv[1]) == "-pub":
+    # Define MQTT Broker's host and port
+    broker_host = str(sys.argv[2])
+    broker_port = int(sys.argv[3])
+    # Define MQTT topic
+    topic = str(sys.argv[4])
+else:
+    print("请输入Mqtt broker的ip和端口号和主题,并用'-pub' 做命令选项。")
+    sys.exit(1)
 
 # Define MQTT message
 # 发送数据位16机制字符串
