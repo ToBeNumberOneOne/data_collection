@@ -1,6 +1,7 @@
 import struct
 import json
-import time
+
+from datetime import datetime, timezone
 
 class CraneDataHandler:
     def __init__(self) -> None:
@@ -27,6 +28,7 @@ class CraneDataHandler:
         self.loadSpeedX = 0
         self.skewAngle = 0
         self.twinGap = 0
+        self.timestamp = datetime.now(tz=timezone.utc)
     
     def parse_data(self, raw_data):
 
@@ -60,7 +62,7 @@ class CraneDataHandler:
      # 定义一个函数，将解析得到的数据转换为json格式并返回
     def data_to_json(self):
         return json.dumps({
-            "timestamp": time.strftime("%Y-%m-%d:%H:%M:%S"),
+            "timestamp": self.timestamp,
             "lock_state": self.lock_state,
             "unlock_state": self.unlock_state,
             "landed_state": self.landed_state,
