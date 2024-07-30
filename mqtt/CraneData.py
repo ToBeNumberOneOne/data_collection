@@ -28,7 +28,7 @@ class CraneDataHandler:
         self.loadSpeedX = 0
         self.skewAngle = 0
         self.twinGap = 0
-        self.timestamp = datetime.now(tz=timezone.utc)
+        self.timestamp = 0
     
     def parse_data(self, raw_data):
 
@@ -59,10 +59,12 @@ class CraneDataHandler:
         self.skewAngle = round(float(struct.unpack("h",raw_data[20:22])[0])/1000,3)
         self.twinGap = struct.unpack("h",raw_data[22:24])[0]
 
+        self.timestamp = datetime.now(tz=timezone.utc)
+
      # 定义一个函数，将解析得到的数据转换为json格式并返回
     def data_to_json(self):
         return json.dumps({
-            "timestamp": self.timestamp,
+            "timestamp": self.timestamp.isoformat(),
             "lock_state": self.lock_state,
             "unlock_state": self.unlock_state,
             "landed_state": self.landed_state,

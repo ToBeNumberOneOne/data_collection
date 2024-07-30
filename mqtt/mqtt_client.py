@@ -8,6 +8,22 @@ from config import MQTT_BROKER_IP
 from config import MQTT_BROKER_PORT
 from config import MQTT_TOPICS
 
+
+from influxdb_client import InfluxDBClient
+from influxdb_client.client.write_api import SYNCHRONOUS
+
+from influx_write_data import write_qc_data,QcData
+
+# influxdb config
+url = "http://10.0.0.74:8086" 
+token = "hpclmJd-xrebBuf-RzNL1Xhx7wqSQmAWSoEoQ1gpfQRj_mBfuMKNnUUbdPvFVX_gvVk7v8E5idM6xCCvUF41fw=="
+org = "jskj"
+
+influxdb_client = InfluxDBClient(url=url, token=token, org=org)
+write_api = influxdb_client.write_api(write_options=SYNCHRONOUS)
+
+Qc_data = QcData(25,0,25,0)
+
 data_frame = CraneDataHandler()
 
 # Callback when the client connects to the broker
@@ -20,7 +36,12 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
     # 解析数据
     data_frame.parse_data(msg.payload)
+    Qc_data.trolleyPos = data_frame.trolleyPos
+    Qc_data.hoistPos = data_frame.hoistPos
+    Qc_data.trolleySpeed = data_frame.trolleySpeed
+    Qc_data.hoistSpeed = data_frame.hoistSpeed
 
+    write_qc_data(Qc_data, write_api)
     #print(msg.topic + data_frame.data_to_json())
 
 async def main():
