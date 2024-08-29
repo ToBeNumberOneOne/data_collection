@@ -5,31 +5,30 @@ from datetime import datetime, timezone
 
 class CraneDataHandler:
     def __init__(self) -> None:
-        self.lock_state = 0
-        self.unlock_state = 0
-        self.landed_state = 0
-        self.sprd20ft = 0
-        self.sprd40ft = 0
-        self.sprd45ft = 0
-        self.singleMode = 0
-        self.twinMode = 0
-        self.trolleyLimit = 0
-        self.hoistLimit = 0
-        self.flipperSlDown = 0
-        self.flipperLlDown = 0
-        self.flipperLrDown = 0
-        self.flipperSrDown = 0
-        self.test_delay_fb = 0
-        self.trolleyPos = 0
-        self.hoistPos = 0
-        self.loadPosX = 0
-        self.trolleySpeed = 0
-        self.hoistSpeed = 0
-        self.loadSpeedX = 0
-        self.skewAngle = 0
-        self.twinGap = 0
-        self.timestamp = 0
-    
+        self.lock_state:bool = 0
+        self.unlock_state:bool = 0
+        self.landed_state:bool = 0
+        self.sprd20ft:bool = 0
+        self.sprd40ft:bool = 0
+        self.sprd45ft:bool = 0
+        self.singleMode:bool = 0
+        self.twinMode:bool = 0
+        self.trolleyLimit:bool = 0
+        self.hoistLimit:bool = 0
+        self.flipperSlDown:bool = 0
+        self.flipperLlDown:bool = 0
+        self.flipperLrDown:bool = 0
+        self.flipperSrDown:bool = 0
+        self.test_delay_fb:bool = 0
+        self.trolleyPos:float = 0
+        self.hoistPos:float = 0
+        self.loadPosX:float = 0
+        self.trolleySpeed:float = 0
+        self.hoistSpeed:float = 0
+        self.loadSpeedX:float = 0
+        self.skewAngle:float = 0
+        self.twinGap:float = 0
+          
     def parse_data(self, raw_data):
 
         word1_low = struct.unpack("b",raw_data[0:1])[0]
@@ -59,9 +58,8 @@ class CraneDataHandler:
         self.skewAngle = round(float(struct.unpack("h",raw_data[20:22])[0])/1000,3)
         self.twinGap = struct.unpack("h",raw_data[22:24])[0]
 
-        self.timestamp = datetime.now(tz=timezone.utc)
-
-     # 定义一个函数，将解析得到的数据转换为json格式并返回
+      
+     # 将解析得到的数据转换为json格式并返回
     def data_to_json(self):
         return json.dumps({
             "timestamp": self.timestamp.isoformat(),
