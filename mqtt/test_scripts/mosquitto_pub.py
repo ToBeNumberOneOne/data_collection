@@ -39,10 +39,10 @@ client.connect(broker_host, broker_port)
 client.loop_start()
 
 # Schedule message publishing every 1 seconds
-schedule.every(1).seconds.do(publish_message, client)
+schedule.every(0.1).seconds.do(publish_message, client)
 
 # Run the scheduled tasks
 while True:
     schedule.run_pending()
-    time.sleep(1)
+    time.sleep(0.01)
     

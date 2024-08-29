@@ -14,6 +14,7 @@ class MqttClient:
         self.topics = MQTT_TOPICS
         self.client = mqtt.Client()
         self.msg = None
+        self.msg_received = False
 
         self.client.on_connect = self.on_connect
         self.client.on_message = self.on_message
@@ -29,8 +30,5 @@ class MqttClient:
             self.client.subscribe(topic)
 
     def on_message(self,client,userdata, msg):
-        #打印时间
-        current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
-        print(f'Received message from {msg.topic}: {msg.payload.decode()} at {current_time}')
-    
-        self.msg = msg   
+        self.msg = msg
+        self.msg_received = True   
