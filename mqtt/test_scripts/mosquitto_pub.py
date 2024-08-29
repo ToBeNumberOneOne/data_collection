@@ -44,5 +44,5 @@ schedule.every(0.1).seconds.do(publish_message, client)
 # Run the scheduled tasks
 while True:
     schedule.run_pending()
-    time.sleep(0.01)
+    time.sleep(0.001)
     

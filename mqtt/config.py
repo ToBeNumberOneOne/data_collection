@@ -4,7 +4,7 @@ MQTT_BROKER_IP = "10.0.1.213"
 
 MQTT_BROKER_PORT = 1883
 
-MQTT_TOPICS = ["Asc16","Asc17","Qc106"]
+MQTT_TOPICS = ["Asc16","Asc17","Asc18","Asc19","Asc20","Qc106"]
 
 # Influxdb config
 
