@@ -6,7 +6,7 @@ from config import INFLUXDB_TOKEN
 from config import INFLUXDB_ORG
 from config import INFLUXDB_BUCKET
 
-class CraneDataWriter:
+class InfluxDbWriter:
     def __init__(self,measurement):
         self.bucket_name = INFLUXDB_BUCKET
         self.measurement = measurement

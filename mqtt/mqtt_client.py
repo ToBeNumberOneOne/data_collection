@@ -1,46 +1,36 @@
 import asyncio
 import paho.mqtt.client as mqtt
-
-from dataframe_handler import CraneDataHandler
-from influxdb_writer import CraneDataWriter
+from datetime import datetime
 
 # Import configuration
 from config import MQTT_BROKER_IP
 from config import MQTT_BROKER_PORT
 from config import MQTT_TOPICS
 
-data_frame = CraneDataHandler()
-data_writer = CraneDataWriter(measurement='Crane_his')
+class MqttClient:
+    def __init__(self):
+        self.broker_ip = MQTT_BROKER_IP
+        self.broker_port = MQTT_BROKER_PORT
+        self.topics = MQTT_TOPICS
+        self.client = mqtt.Client()
+        self.msg = None
 
-# Callback when the client connects to the broker
-def on_connect(client, userdata, flags, rc):
-    print("Connected with result code " + str(rc))
-    for topic in MQTT_TOPICS:
-        client.subscribe(topic)
+        self.client.on_connect = self.on_connect
+        self.client.on_message = self.on_message
 
-# Callback when a message is received
-def on_message(client, userdata, msg):
-    # 解析数据
-    data_frame.parse_data(msg.payload)
-    data_writer.write_crane_datas(data_frame)
-    #print(msg.topic + data_frame.data_to_json())
+    def connect(self):
+        self.client.connect(self.broker_ip, self.broker_port,60)
+        self.client.loop_start()
 
-async def main():
-    client = mqtt.Client()
 
-    client.on_connect = on_connect
-    client.on_message = on_message
+    def on_connect(self,client,userdata,flags, rc):
+        print("Connected with result code" + str(rc))
+        for topic in self.topics:
+            self.client.subscribe(topic)
 
-    client.connect(MQTT_BROKER_IP, MQTT_BROKER_PORT, 60)
-
-    client.loop_start()
-
-    try:
-        while True:
-            await asyncio.sleep(1)
-    except KeyboardInterrupt:
-        client.loop_stop()
-        client.disconnect()
-
-if __name__ == "__main__":
-    asyncio.run(main())
+    def on_message(self,client,userdata, msg):
+        #打印时间
+        current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
+        print(f'Received message from {msg.topic}: {msg.payload.decode()} at {current_time}')
+    
+        self.msg = msg   
