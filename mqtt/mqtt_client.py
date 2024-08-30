@@ -1,6 +1,6 @@
-# mqtt_client.py
 import asyncio
 import paho.mqtt.client as mqtt
+
 from config import MQTT_BROKER_IP, MQTT_BROKER_PORT, MQTT_TOPICS
 
 class MqttClient:

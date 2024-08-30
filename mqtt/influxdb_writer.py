@@ -1,8 +1,9 @@
-# influxdb_writer.py
+import asyncio
 from influxdb_client import InfluxDBClient
 from influxdb_client.client.write_api import SYNCHRONOUS
+
 from config import INFLUXDB_URL, INFLUXDB_TOKEN, INFLUXDB_ORG, INFLUXDB_BUCKET
-import asyncio
+
 
 class InfluxDbWriter:
     def __init__(self):

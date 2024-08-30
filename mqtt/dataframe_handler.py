@@ -1,8 +1,6 @@
 import struct
 import json
 
-from datetime import datetime, timezone
-
 class CraneDataHandler:
     def __init__(self) -> None:
         self.lock_state:bool = 0
