@@ -3,6 +3,7 @@ import paho.mqtt.client as mqtt
 import logging
 
 from config import MQTT_BROKER_IP, MQTT_BROKER_PORT, MQTT_TOPICS
+from config import MQTT_RECONNECT_TIME
 
 logger = logging.getLogger(__name__)
 
@@ -19,7 +20,18 @@ class MqttClient:
         self.client.on_connect = self.on_connect
         self.client.on_message = self.on_message
 
-    def connect(self):
+    async def connect(self):
+        while True:
+            try:
+                logger.info(f"Connecting to MQTT broker at {self.broker_ip}:{self.broker_port}")
+                self.client.connect(self.broker_ip, self.broker_port, 60)
+                self.client.loop_start()
+                break
+            except Exception as e:
+                logger.error(f"Failed to connect to MQTT broker: {e}")
+                logger.info(f"Wille try rconnecting in {MQTT_RECONNECT_TIME} seconds...")
+                await asyncio.sleep(MQTT_RECONNECT_TIME)
+
         logger.info(f"Connecting to MQTT broker at {self.broker_ip}:{self.broker_port}")
         self.client.connect(self.broker_ip, self.broker_port, 60)
         self.client.loop_start()

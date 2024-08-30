@@ -6,6 +6,8 @@ MQTT_BROKER_PORT = 1883
 
 MQTT_TOPICS = ["Asc16","Asc17","Asc18","Asc19","Asc20","Qc106"]
 
+MQTT_RECONNECT_TIME = 10
+
 # Influxdb config
 
 INFLUXDB_URL = "http://10.0.0.74:8086" 
@@ -18,5 +20,5 @@ INFLUXDB_BUCKET = "Test"
 
 # Logger config
 
-LOG_LEVEL = "INFO"
+LOG_LEVEL = "DEBUG"
 

@@ -19,13 +19,17 @@ class InfluxDbWriter:
         data_dict = data_frame.__dict__
         data_dict_list = list(data_dict.keys())
 
-        self.write_api.write(
-            bucket=self.bucket_name,
-            record=data_dict,
-            record_measurement_name=measurement,
-            # record_tag_keys=["engine", "type"],
-            record_field_keys=data_dict_list
-        )
+        try:
+            self.write_api.write(
+                bucket=self.bucket_name,
+                record=data_dict,
+                record_measurement_name=measurement,
+                # record_tag_keys=["engine", "type"],
+                record_field_keys=data_dict_list
+                )
+        except Exception as e:
+            logger.error(f"Error writing crane datas to InfluxDb: {e}")
+        
 
     async def write_crane_datas_async(self, data_frame, measurement):
         loop = asyncio.get_running_loop()

@@ -17,7 +17,7 @@ async def main():
 
     # 实例化 MQTT 客户端，并传递消息队列和事件循环
     mqtt_client = MqttClient(message_queue, loop)
-    mqtt_client.connect()
+    await mqtt_client.connect()
 
     data_frame = CraneDataHandler()
     influx_db_writer = InfluxDbWriter()
