@@ -1,17 +1,21 @@
 import asyncio
 from influxdb_client import InfluxDBClient
 from influxdb_client.client.write_api import SYNCHRONOUS
+import logging
 
 from config import INFLUXDB_URL, INFLUXDB_TOKEN, INFLUXDB_ORG, INFLUXDB_BUCKET
 
+logger = logging.getLogger(__name__)
 
 class InfluxDbWriter:
     def __init__(self):
+        logger.info("Initializing InfluxDbWriter")
         self.bucket_name = INFLUXDB_BUCKET
         self.client = InfluxDBClient(url=INFLUXDB_URL, token=INFLUXDB_TOKEN, org=INFLUXDB_ORG)
         self.write_api = self.client.write_api(write_options=SYNCHRONOUS)
 
     def write_crane_datas(self, data_frame, measurement):
+        logger.debug("Writing crane datas to InfluxDb")
         data_dict = data_frame.__dict__
         data_dict_list = list(data_dict.keys())
 

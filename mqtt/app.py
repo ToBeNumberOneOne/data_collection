@@ -1,10 +1,16 @@
 import asyncio
+import logging
+
+import logger_config
 
 from mqtt_client import MqttClient
 from dataframe_handler import CraneDataHandler
 from influxdb_writer import InfluxDbWriter
 
+logger = logging.getLogger(__name__)
+
 async def main():
+    logger.info("Starting main application")
     # 创建一个 asyncio 队列来存储MQTT消息
     message_queue = asyncio.Queue()
     loop = asyncio.get_running_loop()

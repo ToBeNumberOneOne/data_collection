@@ -41,3 +41,6 @@ influxdb = 2.7.7
 2. 性能优化，可以引入批量写入或者异步数据库客户端工具来缓解数据库写入压力
    
 3. 配置文件中包含敏感信息如token等，需要加密处理
+
+
+- influxdb默认数据存储位置  var/lib/influxdb/engine/data/

@@ -1,8 +1,12 @@
 import struct
 import json
+import logging
+
+logger = logging.getLogger(__name__)
 
 class CraneDataHandler:
     def __init__(self) -> None:
+        logging.info("Initializing CraneDataHandler")
         self.lock_state:bool = 0
         self.unlock_state:bool = 0
         self.landed_state:bool = 0
@@ -28,7 +32,7 @@ class CraneDataHandler:
         self.twinGap:float = 0
           
     def parse_data(self, raw_data):
-
+        #logger.debug("Parsing data: %s", raw_data)
         word1_low = struct.unpack("b",raw_data[0:1])[0]
         word1_high = struct.unpack("b",raw_data[1:2])[0]
         self.lock_state = (word1_low >> 0) & 1

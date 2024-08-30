@@ -15,3 +15,8 @@ INFLUXDB_TOKEN = "hpclmJd-xrebBuf-RzNL1Xhx7wqSQmAWSoEoQ1gpfQRj_mBfuMKNnUUbdPvFVX
 INFLUXDB_ORG = "jskj"
 
 INFLUXDB_BUCKET = "Test"
+
+# Logger config
+
+LOG_LEVEL = "INFO"
+
