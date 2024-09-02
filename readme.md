@@ -46,5 +46,8 @@ influxdb = 2.7.7
 
 5. bug 数据库掉线时缓存的信息插入的时间不对，并且并发增大时的线程不会关闭
 
+6. 缺少对收到数据长度的校验，数据解析时可能出现异常
+
+
 
 - influxdb默认数据存储位置  var/lib/influxdb/engine/data/
