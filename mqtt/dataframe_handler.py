@@ -71,33 +71,33 @@ class CraneDataHandler:
         self.sprd45ft = (word1_high >> 1) & 1
         self.microMotorBrakeOn = (word1_high >> 5) & 1
     
-        self.motorPos1 = (struct.unpack("h",raw_data[10:12])[0])
-        self.motorPos2 = (struct.unpack("h",raw_data[12:14])[0])
-        self.motorPos3 = (struct.unpack("h",raw_data[14:16])[0])
-        self.motorPos4 = (struct.unpack("h",raw_data[16:18])[0])
+        self.motorPos1 = (struct.unpack(">h",raw_data[10:12])[0])
+        self.motorPos2 = (struct.unpack(">h",raw_data[12:14])[0])
+        self.motorPos3 = (struct.unpack(">h",raw_data[14:16])[0])
+        self.motorPos4 = (struct.unpack(">h",raw_data[16:18])[0])
 
-        self.trolleyPos = round(float(struct.unpack("h",raw_data[18:20])[0])/1000,3)
-        self.trolleyVel = round(float(struct.unpack("h",raw_data[20:22])[0])/1000,3)
+        self.trolleyPos = round(float(struct.unpack(">h",raw_data[18:20])[0])/1000,3)
+        self.trolleyVel = round(float(struct.unpack(">h",raw_data[20:22])[0])/1000,3)
 
-        self.hoistPos = round(float(struct.unpack("h",raw_data[24:26])[0])/1000,3)
-        self.hoistVel = round(float(struct.unpack("h",raw_data[26:28])[0])/1000,3)
+        self.hoistPos = round(float(struct.unpack(">h",raw_data[24:26])[0])/1000,3)
+        self.hoistVel = round(float(struct.unpack(">h",raw_data[26:28])[0])/1000,3)
 
-        self.gantryPos = round(float(struct.unpack("i",raw_data[28:32])[0])/1000,3)
-        self.gantryVel = round(float(struct.unpack("h",raw_data[32:34])[0])/1000,3)
+        self.gantryPos = round(float(struct.unpack(">i",raw_data[28:32])[0])/1000,3)
+        self.gantryVel = round(float(struct.unpack(">h",raw_data[32:34])[0])/1000,3)
         
-        self.faultCodeFb = (struct.unpack("h",raw_data[34:36])[0])
-        self.ascFaultCode = (struct.unpack("h",raw_data[36:38])[0])
-        self.taskType = (struct.unpack("h",raw_data[38:40])[0])
+        self.faultCodeFb = (struct.unpack(">h",raw_data[34:36])[0])
+        self.ascFaultCode = (struct.unpack(">h",raw_data[36:38])[0])
+        self.taskType = (struct.unpack(">h",raw_data[38:40])[0])
         self.taskLaneNum = (struct.unpack("h",raw_data[40:42])[0])
-        self.workMode = (struct.unpack("h",raw_data[42:44])[0])
-        self.taskCntSize = (struct.unpack("h",raw_data[44:46])[0])
-        self.taskCntHeight = (struct.unpack("h",raw_data[46:48])[0])
-        self.chaissCntType = (struct.unpack("h",raw_data[48:50])[0])
+        self.workMode = (struct.unpack(">h",raw_data[42:44])[0])
+        self.taskCntSize = (struct.unpack(">h",raw_data[44:46])[0])
+        self.taskCntHeight = (struct.unpack(">h",raw_data[46:48])[0])
+        self.chaissCntType = (struct.unpack(">h",raw_data[48:50])[0])
 
         word26_low = struct.unpack("b",raw_data[50:51])[0]
         word26_high = struct.unpack("b",raw_data[51:52])[0]
 
-        self.autoLandEnabled = (word26_low >> 0) & 1
+        self.autoLandEnabled = (word26_low >> 2) & 1
         self.autoLandFailed = (word26_low >> 3) & 1
         self.autoLandSuccess = (word26_low >> 4) & 1
         self.landModuleFault = (word26_low >> 5) & 1
@@ -108,12 +108,12 @@ class CraneDataHandler:
         self.sprdLockCmd = (word26_high >> 3) >> 1
         self.sprdUnlockCmd = (word26_high >> 4) >> 0
 
-        self.microMotor1Ref = (struct.unpack("h",raw_data[52:54])[0])*21/16384
-        self.microMotor2Ref = (struct.unpack("h",raw_data[54:56])[0])*21/16384
-        self.microMotor3Ref = (struct.unpack("h",raw_data[56:58])[0])*21/16384
-        self.microMotor4Ref = (struct.unpack("h",raw_data[58:60])[0])*21/16384
-        self.hoistSpeedRef = (struct.unpack("h",raw_data[62:64])[0])*21/16384
-        self.faultCode = (struct.unpack("h",raw_data[64:66])[0])
-        self.camCode = (struct.unpack("h",raw_data[66:68])[0])
+        self.microMotor1Ref = (struct.unpack(">h",raw_data[52:54])[0])*21/16384
+        self.microMotor2Ref = (struct.unpack(">h",raw_data[54:56])[0])*21/16384
+        self.microMotor3Ref = (struct.unpack(">h",raw_data[56:58])[0])*21/16384
+        self.microMotor4Ref = (struct.unpack(">h",raw_data[58:60])[0])*21/16384
+        self.hoistSpeedRef = round(float(struct.unpack(">h",raw_data[62:64])[0])/255*1.0,3)
+        self.faultCode = (struct.unpack(">h",raw_data[64:66])[0])
+        self.camCode = (struct.unpack(">h",raw_data[66:68])[0])
 
         
