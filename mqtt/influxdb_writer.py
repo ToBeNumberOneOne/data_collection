@@ -1,6 +1,7 @@
 import asyncio
-from influxdb_client import InfluxDBClient
+from influxdb_client import InfluxDBClient,Point
 from influxdb_client.client.write_api import SYNCHRONOUS
+from datetime import datetime
 import logging
 
 from config import INFLUXDB_URL, INFLUXDB_TOKEN, INFLUXDB_ORG, INFLUXDB_BUCKET
@@ -14,21 +15,28 @@ class InfluxDbWriter:
         self.client = InfluxDBClient(url=INFLUXDB_URL, token=INFLUXDB_TOKEN, org=INFLUXDB_ORG)
         self.write_api = self.client.write_api(write_options=SYNCHRONOUS)
 
-    def write_crane_datas(self, data_frame, measurement):
-        logger.debug("Writing crane datas to InfluxDb")
-        data_dict = data_frame.__dict__
-        data_dict_list = list(data_dict.keys())
+        #数据缓存后再插入
+        self.data_cache = []
+        self.batch_size = 100 
 
-        try:
-            self.write_api.write(
-                bucket=self.bucket_name,
-                record=data_dict,
-                record_measurement_name=measurement,
-                # record_tag_keys=["engine", "type"],
-                record_field_keys=data_dict_list
-                )
-        except Exception as e:
-            logger.error(f"Error writing crane datas to InfluxDb: {e}")
+    def write_crane_datas(self, data_frame, measurement):
+        
+        data_dict = data_frame.__dict__
+
+        data_point = Point(measurement).time(datetime.utcnow())
+
+        for key, value in data_dict.items():
+            data_point.field(key, value)
+
+        self.data_cache.append(data_point)
+        
+        if len(self.data_cache) >= self.batch_size:
+            try:
+                self.write_api.write(bucket=self.bucket_name, record=self.data_cache)
+                self.data_cache = []
+                logger.info(f"Write {self.batch_size} crane datas to tables")
+            except Exception as e:
+                logger.error(f"Error writing crane datas to InfluxDb: {e}")
         
 
     async def write_crane_datas_async(self, data_frame, measurement):

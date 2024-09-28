@@ -6,7 +6,7 @@ from datetime import datetime
 from config import LOG_LEVEL
 
 def setup_logging(log_level=LOG_LEVEL):
-    log_format = '%(asctime)s - [%(funcName)s-->line:%(lineno)d] - %(levelname)s:%(message)s'
+    log_format = '%(asctime)s - [%(filename)s:%(funcName)s-->line:%(lineno)d] - %(levelname)s: %(message)s'
     logging.basicConfig(level=log_level, format=log_format)
 
     # 如果需要将日志输出到文件，可以添加一个 RotatingFileHandler
